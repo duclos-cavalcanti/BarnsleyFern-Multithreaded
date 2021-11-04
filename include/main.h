@@ -1,0 +1,9 @@
+#ifndef MAIN_CONSUMER_H
+#define MAIN_CONSUMER_H
+
+#define MAX_NUMBER_PRODUCED_POINTS 100000000
+#define IMAGE_WIDTH 10000
+#define IMAGE_HEIGHT 20000
+#define WAIT_TIME_BUFFER 1 // in seconds
+
+#endif 
