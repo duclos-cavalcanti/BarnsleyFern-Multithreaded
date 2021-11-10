@@ -12,8 +12,7 @@
 template <typename T> class Buffer {
   private:
     T buffer[1000];
-    std::mutex m_push;
-    std::mutex m_pop;
+    std::mutex m;
     std::condition_variable cv_pop;
     std::condition_variable cv_push;
     int readPtr = 0, writePtr = 0;
@@ -46,7 +45,7 @@ template <typename T> class Buffer {
 
     void push(T& data) {
       {
-        std::unique_lock<std::mutex> lock(m_push);
+        std::unique_lock<std::mutex> lock(m);
         cv_push.wait(lock, 
                [this]{return !this->isBufferFull();});
 
@@ -64,7 +63,7 @@ template <typename T> class Buffer {
     T pop(void) {
       T val;
       {
-        std::unique_lock<std::mutex> lock(m_pop);
+        std::unique_lock<std::mutex> lock(m);
         if(!cv_pop.wait_for(lock, 
                             std::chrono::seconds(WAIT_TIME_BUFFER), 
                             [this] { return !this->isBufferEmpty();})) {
